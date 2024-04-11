@@ -289,14 +289,19 @@ include(MPFR/MPFR.cmake)
 include(CGAL/CGAL.cmake)
 
 include(NLopt/NLopt.cmake)
+set(OPENSSL_PKG "")
+# currently distributed with our deps
+find_package(OpenSSL 1.1.1)
+if (NOT OPENSSL_FOUND)
+    include(OpenSSL/OpenSSL.cmake)
+    set(OPENSSL_PKG dep_OpenSSL)
+endif()
 
 set(CURL_PKG "")
 find_package(CURL)
 if (NOT CURL_FOUND)
-    message(WARNING "no curl package found, building openssl and curl")
-    include(OpenSSL/OpenSSL.cmake)
+    message(WARNING "no curl package found, building curl")
     include(CURL/CURL.cmake)
-    set(OPENSSL_PKG dep_OpenSSL)
     set(CURL_PKG dep_CURL)
 endif ()
 
